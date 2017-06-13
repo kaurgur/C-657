@@ -15,12 +15,23 @@ import android.widget.TextView;
 import android.location.Location;
 import java.text.DecimalFormat;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.parceler.Parcels;
 
-import cis.gvsu.edu.geocalculator.dummy.HistoryContent;
+
 
 
 import static cis.gvsu.edu.geocalculator.R.id.toolbar;
@@ -29,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static int SETTINGS_RESULT = 1;
     public static int HISTORY_RESULT = 2;
-    private final static int locations_lookup = 123;
+    private final static int l = 111;
+    public DatabaseReference topRef = null;
+    public static List<LocationLookup> allHistory;
 
     private String bearingUnits = "degrees";
     private String distanceUnits = "kilometers";
@@ -42,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView distance = null;
     private TextView bearing = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
+        allHistory = new ArrayList<LocationLookup>();
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -61,22 +76,13 @@ public class MainActivity extends AppCompatActivity {
         distance = (TextView) this.findViewById(R.id.distance);
         bearing = (TextView) this.findViewById(R.id.bearing);
 
-/*
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                p1Lat.getText().clear();
-                p1Lng.getText().clear();
-                p2Lat.getText().clear();
-                p2Lng.getText().clear();
-            }
-        });
 
 
- */
+
+
         search.setOnClickListener(v -> {
             Intent look = new Intent(MainActivity.this, LookupActivity.class);
-            startActivityForResult(look, 111);
+            startActivityForResult(look, l);
 
         });
 
@@ -93,10 +99,7 @@ public class MainActivity extends AppCompatActivity {
             bearing.setText("Bearing:");
         });
 
-//        settingsButton.setOnClickListener(v -> {
-//            Intent intent = new Intent(MainActivity.this, MySettingsActivity.class);
-//            startActivityForResult(intent, SETTINGS_RESULT );
-//        });
+
 
         calcButton.setOnClickListener(v -> {
             updateScreen();
@@ -142,9 +145,15 @@ public class MainActivity extends AppCompatActivity {
             bearing.setText(bStr);
 
             // remember the calculation.
-            HistoryContent.HistoryItem item = new HistoryContent.HistoryItem(lat1.toString(),
-                    lng1.toString(), lat2.toString(), lng2.toString(), DateTime.now());
-            HistoryContent.addItem(item);
+            LocationLookup entry = new LocationLookup();
+            entry.setOrigLat(lat1);
+            entry.setOrigLng(lng1);
+            entry.setEndLat(lat2);
+            entry.setEndLng(lng2);
+            DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+            entry.setTimestamp(fmt.print(DateTime.now()));
+           // entry.setTimestamp(DateTime.now());
+            topRef.push().setValue(entry);
 
             hideKeyboard();
         } catch (Exception e) {
@@ -171,19 +180,30 @@ public class MainActivity extends AppCompatActivity {
             this.distanceUnits = data.getStringExtra("distanceUnits");
             updateScreen();
         } else if (resultCode == HISTORY_RESULT) {
-            String[] vals = data.getStringArrayExtra("item");
-            this.p1Lat.setText(vals[0]);
-            this.p1Lng.setText(vals[1]);
-            this.p2Lat.setText(vals[2]);
-            this.p2Lng.setText(vals[3]);
-            this.updateScreen();  // code that updates the calcs.
-        } else if (requestCode == 111) {
+
+            if (data != null && data.hasExtra("locs")) {
+                Parcelable par = data.getParcelableExtra("locs");
+                LocationLookup l = Parcels.unwrap(par);
+                this.p1Lat.setText(String.valueOf(l.origLat));
+                this.p1Lng.setText(String.valueOf(l.origLng));
+                this.p2Lat.setText(String.valueOf(l.endLat));
+                this.p2Lng.setText(String.valueOf(l.endLng));
+                this.updateScreen();
+
+            }
+
+
+        } else if (requestCode == l) {
             if (data != null && data.hasExtra("Locations")) {
                 Parcelable par = data.getParcelableExtra("Locations");
                 LocationLookup l = Parcels.unwrap(par);
-                //this.updateScreen();
+                this.p1Lat.setText(String.valueOf(l.origLat));
+                this.p1Lng.setText(String.valueOf(l.origLng));
+                this.p2Lat.setText(String.valueOf(l.endLat));
+                this.p2Lng.setText(String.valueOf(l.endLng));
+                this.updateScreen();
                 // topRef.push().setValue(l);
-                //Snackbar.make(toolbar, "New Trip Added", Snackbar.LENGTH_SHORT).show();
+
             }
         }
         else
@@ -209,7 +229,51 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+    @Override
+    public void onResume(){
+        super.onResume();
+        allHistory.clear();
+        topRef = FirebaseDatabase.getInstance().getReference("history");
+        topRef.addChildEventListener (chEvListener);
+//topRef.addValueEventListener(valEvListener);
+    }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        topRef.removeEventListener(chEvListener);
+    }
+
+    private ChildEventListener chEvListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            LocationLookup entry = (LocationLookup)
+                    dataSnapshot.getValue(LocationLookup.class);
+            entry._key = dataSnapshot.getKey();
+            allHistory.add(entry);
+        }
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        }
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            LocationLookup entry = (LocationLookup)
+                    dataSnapshot.getValue(LocationLookup.class);
+            List<LocationLookup> newHistory = new ArrayList<LocationLookup>();
+            for (LocationLookup t : allHistory) {
+                if (!t._key.equals(dataSnapshot.getKey())) {
+                    newHistory.add(t);
+                }
+            }
+            allHistory = newHistory;
+        }
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+        }
+    };
 
 
 

@@ -2,6 +2,7 @@ package cis.gvsu.edu.geocalculator;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cis.gvsu.edu.geocalculator.dummy.HistoryContent;
-import cis.gvsu.edu.geocalculator.dummy.HistoryContent.HistoryItem;
+import org.parceler.Parcels;
+
+import java.util.List;
+
+
 
 import static cis.gvsu.edu.geocalculator.R.attr.layoutManager;
 
@@ -29,12 +33,15 @@ public class HistoryFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private static List<LocationLookup> allHistory;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public HistoryFragment() {
+
+        allHistory = MainActivity.allHistory;
     }
 
     // TODO: Customize parameter initialization
@@ -70,7 +77,8 @@ public class HistoryFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new HistoryAdapter(HistoryContent.ITEMS, mListener));
+            //recyclerView.setAdapter(new HistoryAdapter(HistoryContent.ITEMS, mListener));
+            recyclerView.setAdapter(new HistoryAdapter(allHistory, mListener));
 
             DividerItemDecoration did = new DividerItemDecoration(recyclerView.getContext(),
                     DividerItemDecoration.VERTICAL);
@@ -110,6 +118,7 @@ public class HistoryFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(HistoryItem item);
+
+        void onListFragmentInteraction(LocationLookup item);
     }
 }
