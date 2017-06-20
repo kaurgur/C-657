@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1031881458853",
+    "firebase_url": "https://wishext.firebaseio.com",
+    "project_id": "wishext",
+    "storage_bucket": "wishext.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031881458853:android:319e2b354bfbff6f",
+        "android_client_info": {
+          "package_name": "com.example.prabhjot.project_cis657"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031881458853-b2unuosio88jctqmbbqvcq00gujokkek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt_R_pTCl_aGMnlJ1_Eex91jzdPjmhPmY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

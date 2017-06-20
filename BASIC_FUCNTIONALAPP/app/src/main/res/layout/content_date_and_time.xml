@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.prabhjot.project_cis657.DateAndTime"
+    tools:showIn="@layout/activity_date_and_time">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateview"
+        android:text="Date :"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:layout_marginTop="35dp"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="70dp"
+        tools:layout_editor_absoluteY="68dp"
+        tools:layout_editor_absoluteX="147dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timetext"
+        android:text="Select time by choosing hour and minute:"
+        app:layout_constraintTop_toBottomOf="@+id/dateview"
+        android:layout_marginTop="55dp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="70dp"
+        tools:layout_editor_absoluteY="87dp"
+        tools:layout_editor_absoluteX="147dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hour_textview"
+        android:text="Hour :"
+        app:layout_constraintTop_toBottomOf="@+id/timetext"
+        android:layout_marginTop="15dp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="70dp"
+        tools:layout_editor_absoluteY="87dp"
+        tools:layout_editor_absoluteX="147dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/min_textview"
+        android:text="Minute :"
+        app:layout_constraintTop_toBottomOf="@+id/hour_textview"
+        android:layout_marginTop="27dp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="70dp"
+        tools:layout_editor_absoluteY="87dp"
+        tools:layout_editor_absoluteX="147dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hour_value"
+        app:layout_constraintTop_toBottomOf="@+id/timetext"
+        android:layout_marginTop="15dp"
+
+        app:layout_constraintLeft_toRightOf="@id/hour_textview"
+        android:layout_marginStart="75dp"
+        tools:layout_editor_absoluteY="87dp"
+        tools:layout_editor_absoluteX="27dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/min_value"
+        app:layout_constraintTop_toBottomOf="@+id/hour_value"
+        android:layout_marginTop="15dp"
+
+        app:layout_constraintLeft_toRightOf="@id/min_textview"
+        android:layout_marginStart="65dp"
+        tools:layout_editor_absoluteY="87dp"
+        tools:layout_editor_absoluteX="27dp" />
+
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

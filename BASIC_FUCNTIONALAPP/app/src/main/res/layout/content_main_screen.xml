@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.prabhjot.project_cis657.MainScreenActivity"
+    tools:showIn="@layout/activity_main_screen">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/select_contact"
+        android:text="Select Contacts"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:layout_marginTop="35dp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="75dp"
+        tools:layout_editor_absoluteY="68dp"
+        tools:layout_editor_absoluteX="147dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="21dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="75dp"
+        android:id="@+id/select_date"
+        android:text="Select date and time"
+        app:layout_constraintTop_toBottomOf="@+id/select_contact"
+        tools:layout_editor_absoluteX="135dp" />
+
+    <TextView
+        android:text="Customize Message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/select_message"
+        app:layout_constraintTop_toBottomOf="@+id/select_date"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="21dp" />
+
+    <ImageView
+        android:id="@+id/add_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:layout_constraintLeft_toRightOf="@+id/select_contact"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="55dp"
+        tools:layout_editor_absoluteX="305dp"
+        tools:layout_editor_absoluteY="35dp" />
+    <ImageView
+        android:id="@+id/add_dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:layout_constraintLeft_toRightOf="@+id/select_date"
+        app:layout_constraintTop_toBottomOf="@+id/add_contact"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="27dp"
+        tools:layout_editor_absoluteX="305dp"
+        tools:layout_editor_absoluteY="35dp" />
+
+    <ImageView
+        android:id="@+id/add_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:layout_constraintLeft_toRightOf="@+id/select_message"
+        app:layout_constraintTop_toBottomOf="@+id/add_dateTime"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="29dp"
+        tools:layout_editor_absoluteX="305dp"
+        tools:layout_editor_absoluteY="35dp" />
+
+
+    <Button
+        android:text="SCHEDULE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/schedule_button"
+        app:layout_constraintTop_toBottomOf="@+id/select_message"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="28dp" />
+
+
+
+</android.support.constraint.ConstraintLayout>
